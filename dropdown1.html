@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Dropdown cities</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+    <div class="container mt-5">
+        <form id="myform" method="post">
+        <div class="row md-9">
+            <div class="form-group col-md-3">
+                <label for="sel1">Select city 1</label>
+                <select class="form-control" id="sel1" name="sellist1">
+                    <option id="0"></option>
+                    <option id="1">indore</option>
+                    <option id="2">ujjain</option>
+                    <option id="3">bhopal</option>
+                    <option id="4">pune</option>
+                </select>
+            </div>
+
+            <div class="form-group col-md-3">
+                <label for="sel2">Select city2</label>
+                <select class="form-control" id="sel2" name="sellist2">
+                    <option id="0"></option>
+                    <option id="1">indore</option>
+                    <option id="2">ujjain</option>
+                    <option id="3">bhopal</option>
+                    <option id="4">pune</option>
+                </select>
+            </div>
+
+            <div class="form-group col-md-3">
+                <label for="sel3">Select city3</label>
+                <select class="form-control" id="sel3" name="sellist3">
+                    <option id="0"></option>
+                    <option id="1">indore</option>
+                    <option id="2">ujjain</option>
+                    <option id="3">bhopal</option>
+                    <option id="4">pune</option>
+                </select>
+            </div>
+        </div>
+        <button id="submit" type="submit" class="btn btn-primary col-md-1">Submit</button>
+        <button id="submit" type="reset"  class="btn btn-primary col-md-1">reset</button>
+        </form>
+        </br>
+        <div id="result">
+            <h2>selected cities are </h2>
+            <ol>
+                <li id="city1">city1</li>
+                <li id="city2">city1</li>
+                <li id="city3">city1</li>
+            </ol>
+        </div>
+    </div>
+</body>
+
+<script type="text/javascript">
+    $('document').ready(function (){
+        $('#city1').hide();
+        $('#city2').hide();
+        $('#city3').hide();
+
+        $('#submit').click(function(e){
+            e.preventDefault();
+            let sel1 = $('#sel1').val();
+            let sel2 = $('#sel2').val();
+            let sel3 = $('#sel3').val();
+
+            // let val1 = $('#sel1').find('option:selected').attr('id');
+            // let val2 = $('#sel2').find('option:selected').attr('id');
+            // let val3 = $('#sel3').find('option:selected').attr('id');
+
+            if(sel1=="" && sel2=="" && sel3==""){
+                alert('Please select atleast one value each field');
+            }else if(sel1!="" && sel2=="" && sel3==""){
+                alert('please select other fields');
+            }else if(sel1=="" && sel2!="" && sel3!="" ){
+                alert('plese select the first field');
+            }else if(sel1!="" && sel2=="" && sel3!="" ){
+                alert('please select the second field');    
+            }else if((sel1!="" && sel2!="") && (sel1==sel2)){
+                alert('already selected in first field please choose other values in second field');
+            }else if((sel2 != "" && sel3 != "") && (sel2 == sel3)){
+                alert('already selected in second field please choose other value is third field');
+            }else if((sel1 != "" && sel3 != "") && (sel1 == sel3)){
+                alert('this is already selected');
+            }else{
+                alert(`selected citites are 1:${sel1} 2:${sel2} 3:${sel3}`);
+            }
+
+             $('#city1').show();
+            $('#city1').html(sel1);
+            $('#city2').show();
+            $('#city2').html(sel2);
+            $('#city3').show();
+            $('#city3').html(sel3);
+
+        })
+    })
+</script>
+
+</html>
