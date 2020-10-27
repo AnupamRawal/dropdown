@@ -12,6 +12,7 @@ $result1 = mysqli_query($conn, $q);
     <title>Dropdown cities</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
@@ -24,12 +25,12 @@ $result1 = mysqli_query($conn, $q);
             <div class="col md-6">
                 <div class="form-group row-md-3">
                     <label for="sel1">country</label>
-                    <select id="countrySelect" class="form-control" id="sel1" name="sellist1">
-                        <option id=1>select</option>
+                    <select id="country" class="form-control">
+                        <option>select country</option>
                         <?php
                         while ($country = mysqli_fetch_array($result1)) {
                         ?>
-                            <option id='<?php echo $country['id']; ?>'>
+                            <option value=<?php echo $country['id']; ?>>
                                 <?php echo $country['countryName']; ?>
                             </option>
                         <?php
@@ -41,19 +42,17 @@ $result1 = mysqli_query($conn, $q);
 
                 <div class="form-group row-md-3">
                     <label for="sel2">State</label>
-                    <select id="stateSelect" class="form-control" id="sel2" name="sellist2">
+                    <select id="state" class="form-control">
+                        <option>Select State</option>
                         <!-- ajax call here-->
                     </select>
                 </div>
 
                 <div class="form-group row-md-3">
                     <label for="sel3">city</label>
-                    <select class="form-control" id="sel3" name="sellist3">
-                        <option id="0"></option>
-                        <option id="1">indore</option>
-                        <option id="2">ujjain</option>
-                        <option id="3">bhopal</option>
-                        <option id="4">pune</option>
+                    <select id="city" class="form-control">
+                        <option id="0">Select City</option>
+                        <!-- ajax call city here -->
                     </select>
                 </div>
                 <button id="submit" type="submit" class="btn btn-primary col-md-1">Submit</button>
@@ -61,39 +60,51 @@ $result1 = mysqli_query($conn, $q);
             </div>
         </form>
         </br>
-        <!-- <div id="result">
-            <h2>selected cities are </h2>
-            <ol>
-                <li id="city1">city1</li>
-                <li id="city2">city1</li>
-                <li id="city3">city1</li>
-            </ol>
-        </div> -->
     </div>
 </body>
 <script type="text/javascript">
     $('document').ready(function() {
-        let id = $('#countrySelect').find('option:selected').attr('id');
-        function loadState(id) {
+        $('#country').on('change', function() {
+            // $(this).find('option:selected').attr('id');
+            let countryId = $(this).val();
+            console.log(countryId);
             $.ajax({
-                url: 'state.php',
-                type: 'post',
+                method: "post",
+                url: "state.php",
                 data: {
-                    countryId :id
+                    id: countryId
                 },
                 success: function(data) {
-                    $('#stateSelect').html(data)
+                    if (data != null) {
+                        $('#state').html(data);
+                    }else{
+                        $('#state').hide();
+                    }
                 }
-            }) 
-        }
-        loadState(id);
-        $('#countrySele').focusout(function(){
-            let selectedId=$(this).find('option:selected').attr('id');
-            console.log(selectedId);
-            loadState(selectedId);
+            })
         })
 
 
+        $('#state').on('change', function() {
+            let stateId = $(this).val();
+            console.log(stateId);
+            $.ajax({
+                method: "post",
+                url: "city.php",
+                data: {
+                    stateId: stateId
+                },
+                success: function(data) {
+                    if (data) {
+                        console.log(data);
+                        $('#city').html(data);
+                    } else {
+                        $('#city').html('<option>Please select state first</option>');
+                    }
+
+                }
+            })
+        })
     })
 </script>
 
